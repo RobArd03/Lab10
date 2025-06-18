@@ -7,8 +7,10 @@ class Model:
     def __init__(self):
         self._annoI = 1816
         self._annoF = 2016
+        self._nodes = []
         self._grafo=nx.Graph()
         self._idMap = {}
+        self._strMap = {}
 
 
     def buildGraph(self, year: int):
@@ -24,10 +26,16 @@ class Model:
         """
         aggiunge tutti i nodi del grafico minori uguali del anno specificato
         """
-        nodes = DAO.getAllNodes(year)
-        self._grafo.add_nodes_from(nodes)
-        for n in nodes:
-            self._idMap[n.diState] = n
+        self._nodes.extend(DAO.getAllNodes(year))
+        self._grafo.add_nodes_from(self._nodes)
+        for n in self._nodes:
+            self._idMap[n.getIdState()] = n
+            self._strMap[n.getStrState()]= n
+
+
+
+    def getNodes(self):
+        return self._nodes
 
     def numeroCompConnesse(self):
         print(len(self._grafo.nodes), len(self._grafo.edges))
@@ -60,4 +68,10 @@ class Model:
 
     def hasAnno(self, idAnno: int):
         return idAnno >= self._annoI and idAnno <= self._annoF
+
+    def getNodesConn(self, source):
+
+        conn = nx.node_connected_component(self._grafo, self._strMap[source])
+        return conn
+
 

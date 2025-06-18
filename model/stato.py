@@ -17,10 +17,16 @@ class Stato:
         return self.diState == other.diState
 
     def __str__(self):
-        return f"Lo Stato è {self.strState}, in suo numero identificativo {self.diState}"
+        return self.strState,"-", self.diState
 
     def setCollegamenti(self, collegamenti: int):
         self.collegamenti.append(collegamenti)
 
     def getCollegamenti(self):
         return self.collegamenti
+
+    def getStrState(self):
+        return self.strState
+
+    def getIdState(self):
+        return self.diState
